@@ -10,17 +10,13 @@ matrix:
   fast_finish: true
   allow_failures:
     - php: hhvm
+    
+before_script:
+    - travis_retry composer self-update
+    - travis_retry composer install --no-interaction --prefer-source --dev
 
-install:
-  - composer install
-  
-build:
-    tests:
-        override:
-            -
-                command: 'phpunit --coverage-clover=clover.xml'
-                coverage:
-                    file: 'clover.xml'
-                    format: 'php-clover'
+script:
+    - vendor/bin/phpunit --coverage-clover=coverage.xml
+
 after_success:
-  - bash <(curl -s https://codecov.io/bash)
+    - bash <(curl -s https://codecov.io/bash)
