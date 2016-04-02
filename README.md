@@ -7,7 +7,7 @@ properties with read or read+write access. It requires only the presence of some
 
 ## Status
 
-[![Build Status](https://travis-ci.org/UniKado/UK.DynamicProperties.svg?branch=master)](https://travis-ci.org/UniKado/UK.DynamicProperties) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/UniKado/UK.DynamicProperties/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/UniKado/UK.DynamicProperties/?branch=master)
+[![Build Status](https://travis-ci.org/UniKado/UK.DynamicProperties.svg?branch=master)](https://travis-ci.org/UniKado/UK.DynamicProperties) [![Code Coverage](https://scrutinizer-ci.com/g/UniKado/UK.DynamicProperties/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/UniKado/UK.DynamicProperties/?branch=master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/UniKado/UK.DynamicProperties/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/UniKado/UK.DynamicProperties/?branch=master)
 
 ## Installation
 
