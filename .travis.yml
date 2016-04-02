@@ -22,3 +22,5 @@ build:
                 coverage:
                     file: 'clover.xml'
                     format: 'php-clover'
+after_success:
+  - bash <(curl -s https://codecov.io/bash)
