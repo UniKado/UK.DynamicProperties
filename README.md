@@ -5,6 +5,10 @@ This is an PHP5 implementation to easy generate an little bit of "magic" extra f
 If you extend you're class from one of the classes of `\UK\DynamicProperties` so it adds dynamic class instance
 properties with read or read+write access. It requires only the presence of some get*() and/or set*() methods.
 
+## Status
+
+[![Build Status](https://travis-ci.org/UniKado/UK.DynamicProperties.svg?branch=master)](https://travis-ci.org/UniKado/UK.DynamicProperties)
+
 ## Installation
 
 ```
