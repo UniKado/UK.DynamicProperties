@@ -10,6 +10,7 @@ include __DIR__ . '/TestClass.php';
 
 use UK\DynamicProperties\Test\TestClass1;
 use UK\DynamicProperties\Test\TestClass2;
+use UK\DynamicProperties\Test\TestClass3;
 
 
 /**
@@ -27,6 +28,11 @@ class ExplicitGetterSetterTest extends PHPUnit_Framework_TestCase
     * @type TestClass1
     */
    private $getter;
+
+   /**
+    * @type TestClass3
+    */
+   private $getterExtra;
    
    /**
     * @type TestClass2
@@ -43,14 +49,16 @@ class ExplicitGetterSetterTest extends PHPUnit_Framework_TestCase
    protected function setUp()
    {
       parent::setUp();
-      $this->getter = new TestClass1();
+      $this->getter       = new TestClass1();
+      $this->getterExtra  = new TestClass3();
       $this->getterSetter = new TestClass2();
+
    }
 
 
    /**
     * @covers UK\DynamicProperties\ExplicitGetter::__get
-    * @covers UK\DynamicProperties\ExplicitGetter::get
+    * @covers UK\DynamicProperties\ExplicitGetter::__internalGet
     */
    public function test_get_1a()
    {
@@ -59,7 +67,7 @@ class ExplicitGetterSetterTest extends PHPUnit_Framework_TestCase
    }
    /**
     * @covers UK\DynamicProperties\ExplicitGetter::__get
-    * @covers UK\DynamicProperties\ExplicitGetter::get
+    * @covers UK\DynamicProperties\ExplicitGetter::__internalGet
     */
    public function test_get_1b()
    {
@@ -68,7 +76,15 @@ class ExplicitGetterSetterTest extends PHPUnit_Framework_TestCase
    }
    /**
     * @covers UK\DynamicProperties\ExplicitGetter::__get
-    * @covers UK\DynamicProperties\ExplicitGetter::get
+    * @covers UK\DynamicProperties\ExplicitGetter::__internalGet
+    */
+   public function test_get_1c()
+   {
+      $this->assertSame( 'foo', $this->getterExtra->foo, __METHOD__ . ' 1 fails' );
+   }
+   /**
+    * @covers UK\DynamicProperties\ExplicitGetter::__get
+    * @covers UK\DynamicProperties\ExplicitGetter::__internalGet
     */
    public function test_get_2a()
    {
@@ -76,7 +92,7 @@ class ExplicitGetterSetterTest extends PHPUnit_Framework_TestCase
    }
    /**
     * @covers UK\DynamicProperties\ExplicitGetter::__get
-    * @covers UK\DynamicProperties\ExplicitGetter::get
+    * @covers UK\DynamicProperties\ExplicitGetter::__internalGet
     */
    public function test_get_2b()
    {
@@ -84,7 +100,15 @@ class ExplicitGetterSetterTest extends PHPUnit_Framework_TestCase
    }
    /**
     * @covers UK\DynamicProperties\ExplicitGetter::__get
-    * @covers UK\DynamicProperties\ExplicitGetter::get
+    * @covers UK\DynamicProperties\ExplicitGetter::__internalGet
+    */
+   public function test_get_2c()
+   {
+      $this->assertTrue( $this->getterExtra->bar, __METHOD__ . ' fails' );
+   }
+   /**
+    * @covers UK\DynamicProperties\ExplicitGetter::__get
+    * @covers UK\DynamicProperties\ExplicitGetter::__internalGet
     */
    public function test_get_3a()
    {
@@ -92,16 +116,35 @@ class ExplicitGetterSetterTest extends PHPUnit_Framework_TestCase
    }
    /**
     * @covers UK\DynamicProperties\ExplicitGetter::__get
-    * @covers UK\DynamicProperties\ExplicitGetter::get
+    * @covers UK\DynamicProperties\ExplicitGetter::__internalGet
     */
    public function test_get_3b()
    {
       $this->assertSame( 14, $this->getterSetter->bazBlub, __METHOD__ . ' fails' );
    }
+   /**
+    * @covers UK\DynamicProperties\ExplicitGetter::__get
+    * @covers UK\DynamicProperties\ExplicitGetter::__internalGet
+    */
+   public function test_get_3c()
+   {
+      $this->assertSame( 14, $this->getterExtra->bazBlub, __METHOD__ . ' fails' );
+   }
 
-   public function test_get_4()
+   public function test_get_4a()
    {
       try { $baz = $this->getter->baz; }
+      catch ( Exception $ex )
+      {
+         $this->assertTrue( ( $ex instanceof LogicException ), __METHOD__ . ' fails' );
+         return;
+      }
+      $this->fail( __METHOD__ . ' fails! Expected LogicException has not been raised.' );
+   }
+
+   public function test_get_4c()
+   {
+      try { $baz = $this->getterExtra->boing; }
       catch ( Exception $ex )
       {
          $this->assertTrue( ( $ex instanceof LogicException ), __METHOD__ . ' fails' );
@@ -125,6 +168,14 @@ class ExplicitGetterSetterTest extends PHPUnit_Framework_TestCase
    {
       $this->assertTrue( isset( $this->getterSetter->foo ), __METHOD__ . ' fails' );
       $this->assertTrue( $this->getterSetter->__isset( 'foo' ), __METHOD__ . ' fails' );
+   }
+   /**
+    * @covers UK\DynamicProperties\ExplicitGetterSetter::__isset
+    */
+   public function test_isset_1c()
+   {
+      $this->assertTrue( isset( $this->getterExtra->foo ), __METHOD__ . ' fails' );
+      $this->assertTrue( $this->getterExtra->__isset( 'foo' ), __METHOD__ . ' fails' );
    }
    /**
     * @covers UK\DynamicProperties\ExplicitGetterSetter::__isset
@@ -255,7 +306,7 @@ class ExplicitGetterSetterTest extends PHPUnit_Framework_TestCase
    /**
     * @covers UK\DynamicProperties\ExplicitGetterSetter::__set
     * @covers UK\DynamicProperties\ExplicitGetter::__get
-    * @covers UK\DynamicProperties\ExplicitGetter::get
+    * @covers UK\DynamicProperties\ExplicitGetter::__internalGet
     */
    public function test_read_write_1()
    {
@@ -265,7 +316,7 @@ class ExplicitGetterSetterTest extends PHPUnit_Framework_TestCase
    /**
     * @covers UK\DynamicProperties\ExplicitGetterSetter::__set
     * @covers UK\DynamicProperties\ExplicitGetter::__get
-    * @covers UK\DynamicProperties\ExplicitGetter::get
+    * @covers UK\DynamicProperties\ExplicitGetter::__internalGet
     */
    public function test_read_write_2()
    {
@@ -275,7 +326,7 @@ class ExplicitGetterSetterTest extends PHPUnit_Framework_TestCase
    /**
     * @covers UK\DynamicProperties\ExplicitGetterSetter::__set
     * @covers UK\DynamicProperties\ExplicitGetter::__get
-    * @covers UK\DynamicProperties\ExplicitGetter::get
+    * @covers UK\DynamicProperties\ExplicitGetter::__internalGet
     */
    public function test_read_write_3()
    {
@@ -285,7 +336,7 @@ class ExplicitGetterSetterTest extends PHPUnit_Framework_TestCase
    /**
     * @covers UK\DynamicProperties\ExplicitGetterSetter::__set
     * @covers UK\DynamicProperties\ExplicitGetter::__get
-    * @covers UK\DynamicProperties\ExplicitGetter::get
+    * @covers UK\DynamicProperties\ExplicitGetter::__internalGet
     */
    public function test_read_write_5()
    {
@@ -300,7 +351,7 @@ class ExplicitGetterSetterTest extends PHPUnit_Framework_TestCase
 
    /**
     * @covers UK\DynamicProperties\ExplicitGetter::__get
-    * @covers UK\DynamicProperties\ExplicitGetter::get
+    * @covers UK\DynamicProperties\ExplicitGetter::__internalGet
     */
    public function test_compare_prop_getter_1()
    {
@@ -308,7 +359,7 @@ class ExplicitGetterSetterTest extends PHPUnit_Framework_TestCase
    }
    /**
     * @covers UK\DynamicProperties\ExplicitGetter::__get
-    * @covers UK\DynamicProperties\ExplicitGetter::get
+    * @covers UK\DynamicProperties\ExplicitGetter::__internalGet
     */
    public function test_compare_prop_getter_2()
    {
@@ -316,7 +367,7 @@ class ExplicitGetterSetterTest extends PHPUnit_Framework_TestCase
    }
    /**
     * @covers UK\DynamicProperties\ExplicitGetter::__get
-    * @covers UK\DynamicProperties\ExplicitGetter::get
+    * @covers UK\DynamicProperties\ExplicitGetter::__internalGet
     */
    public function test_compare_prop_getter_3()
    {

@@ -1,6 +1,6 @@
 # UK.DynamicProperties
 
-This is an PHP5 implementation to easy generate an little bit of "magic" extra functionality to you're PHP classes.
+This is an PHP7 implementation to easy generate an little bit of "magic" extra functionality to you're PHP classes.
 
 If you extend you're class from one of the classes of `\UK\DynamicProperties` so it adds dynamic class instance
 properties with read or read+write access. It requires only the presence of some get*() and/or set*() methods.
@@ -127,4 +127,27 @@ class MyClass extends ExplicitGetterSetter
 }
 ```
 
-That it.
+### Special cases: Ignore Getters and/or Setters
+
+Often not all get* and/or set* methods should be usable as dynamic properties.
+
+For this cases you can explicit declare the names of the properties that should not be accessible
+by the dynamic way.
+
+Fo it you have to define this dynamic property names inside the constructor of the extending class:
+
+```php
+   public function __construct()
+   {
+
+      // ignore the getBar() method
+      $this->ignoreGetProperties = [ 'bar' ];
+
+      // If the class extends from ExplicitGetterSetter you can also
+      // Define the getter that should be ignored. e.g.: ignore setFoo()
+      $this->ignoreSetProperties = [ 'foo' ];
+
+   }
+```
+
+End of document :-)

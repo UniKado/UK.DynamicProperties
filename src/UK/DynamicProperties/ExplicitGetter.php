@@ -4,8 +4,11 @@
  * @copyright  (c) 2016, UniKado
  * @package        UK\DynamicProperties
  * @since          2016-04-01
- * @version        0.1.0-dev (Tata43)
+ * @version        0.2.0
  */
+
+
+declare( strict_types = 1 );
 
 
 namespace UK\DynamicProperties;
@@ -26,6 +29,19 @@ abstract class ExplicitGetter
 {
 
 
+   // <editor-fold desc="// = = = =   P R O T E C T E D   F I E L D S   = = = = = = = = = = = = = = = = = = = = = = =">
+
+   /**
+    * The names of all get* methods (without the leading get) that should not be mapped as dynamic properties
+    *
+    * @type  array
+    * @since v0.2.0
+    */
+   protected $ignoreGetProperties = [];
+
+   // </editor-fold>
+
+
    // <editor-fold desc="// = = = =   P U B L I C   M E T H O D S   = = = = = = = = = = = = = = = = = = = = = = = = =">
 
    /**
@@ -35,10 +51,10 @@ abstract class ExplicitGetter
     * @return mixed
     * @throws \LogicException If the property is unknown
     */
-   public function __get( $name )
+   public function __get( string $name )
    {
 
-      return $this->get( $name );
+      return $this->__internalGet( $name );
 
    }
 
@@ -48,10 +64,10 @@ abstract class ExplicitGetter
     * @param  string $name The name of the required property.
     * @return boolean
     */
-   public function __isset( $name )
+   public function __isset( string $name )
    {
 
-      return \method_exists( $this, 'get' . \ucfirst( $name ) );
+      return $this->hasReadableProperty( $name, $getterName );
 
    }
 
@@ -62,8 +78,13 @@ abstract class ExplicitGetter
     * @param  string $getterName Returns the name of the associated get method, if method returns TRUE.
     * @return boolean
     */
-   public function hasReadableProperty( $name, &$getterName )
+   public function hasReadableProperty( string $name, &$getterName ) : bool
    {
+
+      if ( \in_array( $name, $this->ignoreGetProperties ) )
+      {
+         return false;
+      }
 
       $getterName = 'get' . \ucfirst( $name );
 
@@ -80,7 +101,7 @@ abstract class ExplicitGetter
     * @param string $name
     * @return mixed
     */
-   protected function get( $name )
+   protected function __internalGet( string $name )
    {
 
       // The name of the required getMethod
